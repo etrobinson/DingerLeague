@@ -1,4 +1,5 @@
 const MLB_STATS_API_BASE_URL = "https://statsapi.mlb.com";
+const MLB_HEADSHOT_BASE_URL = "https://img.mlbstatic.com/mlb-photos/image/upload";
 
 type QueryValue = string | number | boolean | null | undefined;
 type QueryParams = Record<string, QueryValue | QueryValue[]>;
@@ -20,6 +21,19 @@ export interface SeasonBattingStatsOptions {
   limit?: number;
   playerPool?: "ALL" | "QUALIFIED" | "ROOKIES";
   sortStat?: keyof MlbBattingStatLine;
+  signal?: AbortSignal;
+}
+
+export interface MlbScheduleOptions {
+  date: string;
+  hydrate?: string;
+  signal?: AbortSignal;
+  sportId?: number;
+}
+
+export interface MlbTeamRosterOptions {
+  rosterType?: "active" | "fullSeason" | "40Man";
+  season?: number;
   signal?: AbortSignal;
 }
 
@@ -115,6 +129,86 @@ export interface MlbHydratedPerson<TStatLine> extends MlbPerson {
 export interface MlbPeopleResponse<TStatLine> {
   copyright?: string;
   people: Array<MlbHydratedPerson<TStatLine>>;
+}
+
+export interface MlbScheduledGame {
+  gamePk: number;
+  gameDate?: string;
+  officialDate?: string;
+  status: {
+    abstractGameState?: string;
+    detailedState?: string;
+    statusCode?: string;
+  };
+  teams: {
+    away: {
+      team: MlbTeam;
+    };
+    home: {
+      team: MlbTeam;
+    };
+  };
+}
+
+export interface MlbScheduleResponse {
+  copyright?: string;
+  totalGames?: number;
+  dates: Array<{
+    date: string;
+    games: MlbScheduledGame[];
+  }>;
+}
+
+export interface MlbBoxscorePlayer {
+  person: MlbPerson;
+  stats?: {
+    batting?: {
+      atBats?: number;
+      plateAppearances?: number;
+      homeRuns?: number;
+    };
+  };
+}
+
+export interface MlbGameFeedResponse {
+  copyright?: string;
+  gamePk: number;
+  gameData: {
+    status: {
+      abstractGameState?: string;
+      detailedState?: string;
+      statusCode?: string;
+    };
+  };
+  liveData?: {
+    boxscore?: {
+      teams?: {
+        away?: {
+          players?: Record<string, MlbBoxscorePlayer>;
+        };
+        home?: {
+          players?: Record<string, MlbBoxscorePlayer>;
+        };
+      };
+    };
+  };
+}
+
+export interface MlbTeamRosterResponse {
+  copyright?: string;
+  roster: Array<{
+    person: MlbPerson;
+    position?: {
+      abbreviation?: string;
+      code?: string;
+      name?: string;
+      type?: string;
+    };
+    status?: {
+      code?: string;
+      description?: string;
+    };
+  }>;
 }
 
 export class MlbStatsApiError extends Error {
@@ -214,9 +308,59 @@ export class MlbStatsApiService {
       signal,
     });
   }
+
+  getSchedule(options: MlbScheduleOptions): Promise<MlbScheduleResponse> {
+    const {
+      date,
+      hydrate = "team",
+      signal,
+      sportId = 1,
+    } = options;
+
+    return this.request<MlbScheduleResponse>("schedule", {
+      query: {
+        sportId,
+        date,
+        hydrate,
+      },
+      signal,
+    });
+  }
+
+  getGameFeed(
+    gamePk: string | number,
+    signal?: AbortSignal,
+  ): Promise<MlbGameFeedResponse> {
+    return this.request<MlbGameFeedResponse>(`api/v1.1/game/${gamePk}/feed/live`, {
+      signal,
+    });
+  }
+
+  getTeamRoster(
+    teamId: string | number,
+    options: MlbTeamRosterOptions = {},
+  ): Promise<MlbTeamRosterResponse> {
+    const {
+      rosterType = "fullSeason",
+      season = new Date().getFullYear(),
+      signal,
+    } = options;
+
+    return this.request<MlbTeamRosterResponse>(`teams/${teamId}/roster`, {
+      query: {
+        rosterType,
+        season,
+      },
+      signal,
+    });
+  }
 }
 
 export const mlbStatsApi = new MlbStatsApiService();
+
+export function getMlbPlayerHeadshotUrl(playerId: string | number, width = 120) {
+  return `${MLB_HEADSHOT_BASE_URL}/d_people:generic:headshot:67:current.png/w_${width},q_auto:best/v1/people/${playerId}/headshot/67/current`;
+}
 
 function buildMlbStatsApiUrl(endpoint: string, query: QueryParams = {}) {
   const path = endpoint.replace(/^\/+/, "");

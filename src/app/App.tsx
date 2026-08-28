@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { LeagueStandings } from "./components/LeagueStandings";
 import { LEAGUE_SEASON, rosterPlayers, rosterTeams } from "./data/leagueRosters";
-import { mlbStatsApi } from "./services";
-import { Activity } from "lucide-react";
+import {
+  getMlbPlayerHeadshotUrl,
+  getPlayerDailyStatuses,
+  mlbStatsApi,
+} from "./services";
+import type { PlayerGameStatus } from "./services";
+import { Flame, Radio, Trophy, Zap } from "lucide-react";
 import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 
 interface Player {
@@ -11,6 +16,10 @@ interface Player {
   team: string;
   position: string;
   homeRuns: number;
+  imageUrl: string;
+  teamId: number | null;
+  status: PlayerGameStatus;
+  statusLabel: string;
 }
 
 interface Team {
@@ -27,6 +36,10 @@ const initialPlayers: Player[] = rosterPlayers.map((player) => ({
   team: player.team,
   position: player.position,
   homeRuns: player.spreadsheetHomeRuns,
+  imageUrl: getMlbPlayerHeadshotUrl(player.id),
+  teamId: null,
+  status: "not_playing_today",
+  statusLabel: "Not playing today",
 }));
 
 export default function App() {
@@ -52,19 +65,50 @@ export default function App() {
           ]),
         );
 
-        setPlayers(
-          rosterPlayers.map((rosterPlayer) => {
-            const split = statsByPlayerId.get(rosterPlayer.id);
-            return {
-              id: rosterPlayer.id,
-              name: rosterPlayer.name,
-              team: split?.team?.abbreviation ?? split?.team?.name ?? rosterPlayer.team,
-              position: split?.position?.abbreviation ?? rosterPlayer.position,
-              homeRuns: split?.stat.homeRuns ?? rosterPlayer.spreadsheetHomeRuns,
-            };
-          }),
-        );
+        const updatedPlayers = rosterPlayers.map((rosterPlayer) => {
+          const split = statsByPlayerId.get(rosterPlayer.id);
+
+          return {
+            id: rosterPlayer.id,
+            name: rosterPlayer.name,
+            team: split?.team?.abbreviation ?? split?.team?.name ?? rosterPlayer.team,
+            position: split?.position?.abbreviation ?? rosterPlayer.position,
+            homeRuns: split?.stat.homeRuns ?? rosterPlayer.spreadsheetHomeRuns,
+            imageUrl: getMlbPlayerHeadshotUrl(rosterPlayer.id),
+            teamId: split?.team?.id ?? null,
+            status: "not_playing_today" as PlayerGameStatus,
+            statusLabel: "Not playing today",
+          };
+        });
+
+        setPlayers(updatedPlayers);
         setStatsStatus("live");
+
+        try {
+          const dailyStatuses = await getPlayerDailyStatuses(
+            updatedPlayers.map((player) => ({
+              id: player.id,
+              teamId: player.teamId,
+            })),
+            controller.signal,
+          );
+
+          setPlayers((currentPlayers) => currentPlayers.map((player) => {
+            const dailyStatus = dailyStatuses.get(player.id);
+
+            return dailyStatus
+              ? {
+                ...player,
+                status: dailyStatus.status,
+                statusLabel: dailyStatus.label,
+              }
+              : player;
+          }));
+        } catch (error) {
+          if (!controller.signal.aborted) {
+            console.error("Unable to load player daily statuses", error);
+          }
+        }
       } catch (error) {
         if (!controller.signal.aborted) {
           console.error("Unable to load MLB batting stats", error);
@@ -86,35 +130,78 @@ export default function App() {
     }, 0),
   }));
 
-  return (
-    <div className="mlb-page min-h-screen p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <div className="stadium-header overflow-hidden rounded-lg border border-[#1e4f86] p-5 text-white shadow-2xl shadow-black/40 sm:p-7">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#2c65a2] bg-[#071c3d]/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#c9dcf7]">
-                <Activity className="size-3.5 text-[#ffcf57]" />
-                Live MLB Stats
-              </div>
-              <div>
-                <h1 className="flex items-center gap-3 text-3xl font-black leading-tight text-white sm:text-5xl">
-                  <span className="flex size-12 items-center justify-center rounded-md bg-white shadow-lg shadow-black/20">
-                    <SportsBaseballIcon className="!size-8 text-[#BF0D3E]" />
-                  </span>
-                  Dinger League
-                </h1>
-                <p className="mt-2 text-base font-medium text-white/80 sm:text-lg">
-                  {LEAGUE_SEASON} Season Standings
-                </p>
-              </div>
-            </div>
+  const totalLeagueHomeRuns = players.reduce((total, player) => total + player.homeRuns, 0);
+  const leader = [...teams].sort((a, b) => b.totalHomeRuns - a.totalHomeRuns)[0];
+  const liveNowCount = players.filter((player) => player.status === "in_game_now").length;
 
-            <div className="rounded-lg border border-[#2c65a2] bg-[#061832]/90 px-4 py-3 text-sm font-semibold text-[#dceaff] shadow-inner shadow-black/20 sm:text-right">
+  return (
+    <div className="mlb-page min-h-screen pb-16">
+      <div className="app-header sticky top-0 z-20 border-b border-white/5">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <span className="brand-mark flex size-11 shrink-0 items-center justify-center rounded-2xl">
+              <SportsBaseballIcon className="!size-6 text-white" />
+            </span>
+            <div>
+              <h1 className="text-lg font-black leading-none tracking-tight text-white sm:text-xl">
+                Dinger League
+              </h1>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {LEAGUE_SEASON} Season
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={
+              "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold " +
+              (statsStatus === "live"
+                ? "border-accent/30 bg-accent/10 text-accent"
+                : "border-white/10 bg-white/5 text-muted-foreground")
+            }
+          >
+            <Radio className="size-3.5" />
+            <span className="hidden sm:inline">
               {statsStatus === "loading"
-                ? "Loading batting stats..."
+                ? "Loading stats..."
                 : statsStatus === "live"
-                  ? "Synced with MLB Stats API"
-                  : "Using spreadsheet totals"}
+                  ? "Live • MLB Stats API"
+                  : "Offline • Spreadsheet totals"}
+            </span>
+            <span className="sm:hidden">
+              {statsStatus === "loading" ? "Loading" : statsStatus === "live" ? "Live" : "Offline"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-5xl space-y-5 px-4 pt-6 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="stat-strip-card rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4">
+            <div className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground sm:text-xs">
+              <Trophy className="size-3.5 text-[var(--gold)]" />
+              <span className="truncate">Leader</span>
+            </div>
+            <div className="mt-1.5 truncate text-base font-black text-white sm:text-xl">
+              {leader?.owner ?? "—"}
+            </div>
+          </div>
+          <div className="stat-strip-card rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4">
+            <div className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground sm:text-xs">
+              <Flame className="size-3.5 text-primary" />
+              <span className="truncate">Total HRs</span>
+            </div>
+            <div className="mt-1.5 text-base font-black tabular-nums text-white sm:text-xl">
+              {totalLeagueHomeRuns}
+            </div>
+          </div>
+          <div className="stat-strip-card rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4">
+            <div className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-muted-foreground sm:text-xs">
+              <Zap className="size-3.5 text-accent" />
+              <span className="truncate">Live Now</span>
+            </div>
+            <div className="mt-1.5 text-base font-black tabular-nums text-white sm:text-xl">
+              {liveNowCount}
             </div>
           </div>
         </div>
@@ -124,3 +211,4 @@ export default function App() {
     </div>
   );
 }
+

@@ -2,43 +2,53 @@
 
 :root {
   --font-size: 16px;
-  --background: #041E42;
-  --foreground: #ffffff;
-  --card: #0a2a5a;
-  --card-foreground: #ffffff;
-  --popover: #0a2a5a;
-  --popover-foreground: #ffffff;
-  --primary: #BF0D3E;
+  --font-sans: "Inter", "SF Pro Display", system-ui, -apple-system, sans-serif;
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --background: #0a0f1e;
+  --foreground: #f4f7ff;
+  --card: #131a2e;
+  --card-foreground: #f4f7ff;
+  --popover: #131a2e;
+  --popover-foreground: #f4f7ff;
+  --primary: #e11d48;
   --primary-foreground: #ffffff;
-  --secondary: #ffffff;
-  --secondary-foreground: #041E42;
-  --muted: #153a6b;
-  --muted-foreground: #b8c5d9;
-  --accent: #1a4478;
-  --accent-foreground: #ffffff;
-  --destructive: #BF0D3E;
+  --secondary: #1b2440;
+  --secondary-foreground: #f4f7ff;
+  --muted: #171f38;
+  --muted-foreground: #8b96b8;
+  --accent: #22d3b8;
+  --accent-foreground: #04241f;
+  --destructive: #e11d48;
   --destructive-foreground: #ffffff;
-  --border: #2a4a7a;
+  --border: rgba(255, 255, 255, 0.08);
   --input: transparent;
-  --input-background: #0a2a5a;
-  --switch-background: #2a4a7a;
+  --input-background: #131a2e;
+  --switch-background: #26304f;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #5c7ba8;
-  --chart-1: #BF0D3E;
-  --chart-2: #ffffff;
-  --chart-3: #5c7ba8;
-  --chart-4: #1a4478;
-  --chart-5: #b8c5d9;
-  --radius: 0.625rem;
-  --sidebar: #041E42;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #BF0D3E;
+  --ring: #22d3b8;
+  --chart-1: #e11d48;
+  --chart-2: #22d3b8;
+  --chart-3: #f5b942;
+  --chart-4: #7c9bff;
+  --chart-5: #8b96b8;
+  --radius: 1rem;
+  --sidebar: #0a0f1e;
+  --sidebar-foreground: #f4f7ff;
+  --sidebar-primary: #e11d48;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #153a6b;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #2a4a7a;
-  --sidebar-ring: #5c7ba8;
+  --sidebar-accent: #171f38;
+  --sidebar-accent-foreground: #f4f7ff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #22d3b8;
+
+  /* Rank / medal accents */
+  --gold: #f5c344;
+  --gold-foreground: #3a2a06;
+  --silver: #cbd5e6;
+  --silver-foreground: #2a3242;
+  --bronze: #e0995e;
+  --bronze-foreground: #3a2410;
 }
 
 .dark {
@@ -117,6 +127,14 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-silver: var(--silver);
+  --color-silver-foreground: var(--silver-foreground);
+  --color-bronze: var(--bronze);
+  --color-bronze-foreground: var(--bronze-foreground);
 }
 
 @layer base {
@@ -126,6 +144,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 
   /**
@@ -141,7 +160,6 @@
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
-    font-family: auto;
   }
 
   h2 {
@@ -154,7 +172,6 @@
     font-size: var(--text-lg);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
-    font-family: auto;
   }
 
   h4 {
@@ -180,26 +197,48 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
 }
 
 @layer components {
   .mlb-page {
     background:
-      linear-gradient(126deg, rgba(191, 13, 62, 0.2) 0 12%, transparent 12% 100%),
-      radial-gradient(circle at 88% 0%, rgba(46, 111, 177, 0.42), transparent 34%),
-      linear-gradient(150deg, #010817 0%, #041E42 48%, #062b5c 100%);
+      radial-gradient(circle at 12% -8%, rgba(225, 29, 72, 0.16), transparent 32%),
+      radial-gradient(circle at 92% 0%, rgba(34, 211, 184, 0.12), transparent 38%),
+      linear-gradient(180deg, #05070f 0%, #0a0f1e 22%, #0a0f1e 100%);
     position: relative;
     overflow-x: hidden;
   }
 
   .mlb-page::before {
-    background:
-      linear-gradient(90deg, rgba(157, 182, 216, 0.12) 1px, transparent 1px),
-      linear-gradient(0deg, rgba(157, 182, 216, 0.08) 1px, transparent 1px),
-      linear-gradient(135deg, transparent 0 46%, rgba(191, 13, 62, 0.18) 46% 48%, transparent 48% 100%);
-    background-size: 72px 72px, 72px 72px, 100% 100%;
+    background-image:
+      radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
     content: "";
     inset: 0;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
     pointer-events: none;
     position: fixed;
   }
@@ -208,27 +247,51 @@
     position: relative;
   }
 
-  .stadium-header {
-    background:
-      linear-gradient(90deg, rgba(191, 13, 62, 0.62), rgba(191, 13, 62, 0) 34%),
-      radial-gradient(circle at 86% 12%, rgba(55, 121, 199, 0.5), transparent 30%),
-      linear-gradient(135deg, rgba(1, 8, 23, 0.98), rgba(4, 30, 66, 0.96));
-    position: relative;
+  .app-header {
+    background: rgba(19, 26, 46, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
-  .stadium-header::after {
-    background:
-      linear-gradient(90deg, transparent 0 18%, rgba(255, 255, 255, 0.14) 18% 19%, transparent 19% 100%),
-      linear-gradient(0deg, rgba(255, 255, 255, 0.12), transparent 55%);
-    background-size: 42px 100%, 100% 100%;
-    content: "";
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
+  .brand-mark {
+    background: linear-gradient(155deg, #ff2d55 0%, #e11d48 55%, #9f0e35 100%);
+    box-shadow: 0 8px 24px -8px rgba(225, 29, 72, 0.55);
   }
 
-  .stadium-header > * {
-    position: relative;
-    z-index: 1;
+  .stat-strip-card {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 60%), var(--card);
+    border: 1px solid var(--border);
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+
+  .stat-strip-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .rank-row {
+    transition: background-color 160ms ease, border-color 160ms ease;
+  }
+
+  .rank-row:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  .progress-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    height: 6px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, var(--accent), #5eead4);
+    border-radius: 999px;
+    height: 100%;
+    transition: width 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .progress-fill.is-leader {
+    background: linear-gradient(90deg, #ff2d55, var(--primary));
   }
 }
