@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
-import { BadgeDollarSign } from "lucide-react";
-import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
+import { DollarSign, Trophy } from "lucide-react";
 import { cn } from "./ui/utils";
+import type { PlayerGameStatus } from "../services";
 
 interface Player {
   id: string;
@@ -10,6 +11,9 @@ interface Player {
   team: string;
   position: string;
   homeRuns: number;
+  imageUrl: string;
+  status: PlayerGameStatus;
+  statusLabel: string;
 }
 
 interface Team {
@@ -27,20 +31,21 @@ interface LeagueStandingsProps {
 
 export function LeagueStandings({ teams, allPlayers }: LeagueStandingsProps) {
   const sortedTeams = [...teams].sort((a, b) => b.totalHomeRuns - a.totalHomeRuns);
+  const maxHomeRuns = Math.max(1, ...sortedTeams.map((team) => team.totalHomeRuns));
 
   return (
-    <Card className="overflow-hidden rounded-lg border-[#1d4b82] bg-[#061a38]/95 text-white shadow-2xl shadow-black/35 backdrop-blur">
-      <div className="flex flex-col gap-3 border-b border-[#1d4b82] bg-[#03142d] px-4 py-4 text-white sm:flex-row sm:items-center sm:justify-between">
+    <Card className="overflow-hidden rounded-2xl border-white/8 bg-card shadow-xl shadow-black/30">
+      <div className="flex flex-col gap-3 border-b border-white/8 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#89aeda]">
+          <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-muted-foreground">
             League Table
           </p>
-          <h2 className="text-xl font-black uppercase leading-tight">
-            2026 Money Race
+          <h2 className="text-xl font-black tracking-tight text-white">
+            Money Race
           </h2>
         </div>
-        <div className="inline-flex w-fit items-center gap-2 rounded-md border border-[#2c65a2] bg-[#0a2854] px-3 py-2 text-sm font-black uppercase tracking-wide text-[#dceaff] shadow-lg shadow-black/20">
-          <BadgeDollarSign className="size-4" />
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-3 py-1.5 text-xs font-bold text-[var(--gold)]">
+          <DollarSign className="size-3.5" />
           Top 4 Paid
         </div>
       </div>
@@ -52,65 +57,71 @@ export function LeagueStandings({ teams, allPlayers }: LeagueStandingsProps) {
               .sort((a, b) => b.homeRuns - a.homeRuns || a.name.localeCompare(b.name));
             const rank = index + 1;
             const payout = getPayout(rank);
+            const progress = Math.round((team.totalHomeRuns / maxHomeRuns) * 100);
 
             return (
               <AccordionItem
                 key={team.id}
                 value={team.id}
-                className={cn("border-[#173c6b]", getRankBorderClass(rank))}
+                className={cn(
+                  "rank-row border-white/6 border-l-2 last:border-b-0",
+                  getRankRailClass(rank),
+                )}
               >
-                <AccordionTrigger
-                  className={cn(
-                    "px-4 py-4 hover:no-underline",
-                    getRankTriggerClass(rank),
-                  )}
-                >
-                  <div className="flex items-center gap-4 w-full">
-                    <div className={cn(
-                      "flex size-12 shrink-0 items-center justify-center rounded-md text-lg font-black",
-                      getRankBadgeClass(rank),
-                    )}>
-                     <span>{rank}</span>
-                    </div>
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline sm:px-5">
+                  <div className="flex w-full items-center gap-3 sm:gap-4">
+                    <RankBadge rank={rank} />
                     <div className="min-w-0 flex-1 text-left">
-                      <div className="truncate text-lg font-black text-inherit">
-                        {team.owner}
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="truncate text-base font-black text-white sm:text-lg">
+                          {team.owner === "Zach Bishop" ? "💩 " + team.owner : team.owner}
+                        </span>
+                        {payout ? (
+                          <span className={cn(
+                            "hidden shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide sm:inline-flex",
+                            getPayoutPillClass(rank),
+                          )}>
+                            {formatOrdinal(rank)} • ${payout}
+                          </span>
+                        ) : null}
                       </div>
-                      {payout ? (
-                        <div className={cn(
-                          "mt-1 flex w-fit items-center gap-2 rounded-full border px-2 py-0.5 text-xs font-black uppercase tracking-[0.12em]",
-                          getPayoutPillClass(rank),
-                        )}>
-                          <span>{formatOrdinal(rank)}</span>
-                          <span className="text-[#7fa7d8]">•</span>
-                          <span>${payout}</span>
-                        </div>
-                      ) : null}
+                      <div className="progress-track mt-2 max-w-[220px]">
+                        <div
+                          className={cn("progress-fill", rank === 1 && "is-leader")}
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-black tabular-nums text-white">
+                    <div className="shrink-0 text-right">
+                      <div className="text-xl font-black tabular-nums text-white sm:text-2xl">
                         {team.totalHomeRuns}
                       </div>
-                      <div className="text-[0.65rem] font-black uppercase tracking-[0.16em] text-[#86a8d1]">
+                      <div className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                         HR
                       </div>
                     </div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="bg-[#04142d] px-4 pb-4">
-                  <div className="space-y-2 pt-3 sm:pl-16">
+                <AccordionContent className="px-4 pb-4 sm:px-5">
+                  <div className="space-y-1.5 pt-1 sm:pl-14">
                     {teamPlayers.map((player) => (
                       <div
                         key={player.id}
-                        className="flex items-center justify-between gap-4 rounded-md border border-[#173c6b] bg-[#081f42] px-3 py-2 shadow-sm shadow-black/20"
+                        className="flex items-center justify-between gap-4 rounded-xl border border-white/6 bg-white/[0.02] px-3 py-2 transition-colors hover:bg-white/[0.04]"
                       >
-                        <div className="min-w-0">
-                          <div className="truncate font-bold text-white">{player.name}</div>
-                          <div className="text-sm font-medium text-[#9db6d8]">
-                            {player.team} • {player.position}
+                        <div className="flex min-w-0 items-center gap-3">
+                          <PlayerHeadshot player={player} />
+                          <div className="min-w-0">
+                            <div className="flex min-w-0 flex-wrap items-center gap-2">
+                              <div className="truncate text-sm font-bold text-white">{player.name}</div>
+                              <PlayerStatusBadge player={player} />
+                            </div>
+                            <div className="text-xs font-medium text-muted-foreground">
+                              {player.team} • {player.position}
+                            </div>
                           </div>
                         </div>
-                        <div className="rounded-md bg-[#BF0D3E] px-3 py-1 text-lg font-black tabular-nums text-white shadow shadow-[#BF0D3E]/25">
+                        <div className="shrink-0 rounded-lg bg-primary/15 px-2.5 py-1 text-sm font-black tabular-nums text-primary">
                           {player.homeRuns}
                         </div>
                       </div>
@@ -126,35 +137,119 @@ export function LeagueStandings({ teams, allPlayers }: LeagueStandingsProps) {
   );
 }
 
-function getRankBorderClass(rank: number) {
-  if (rank === 1) return "border-l-4 border-l-[#8f3147]";
-  if (rank === 2) return "border-l-4 border-l-[#8f7640]";
-  if (rank === 3) return "border-l-4 border-l-[#416f9f]";
-  if (rank === 4) return "border-l-4 border-l-[#3d765f]";
-  return "";
+function RankBadge({ rank }: { rank: number }) {
+  if (rank <= 3) {
+    return (
+      <div className={cn(
+        "flex size-10 shrink-0 items-center justify-center rounded-xl sm:size-11",
+        getMedalClass(rank),
+      )}>
+        <Trophy className="size-4 sm:size-5" />
+      </div>
+    );
+  }
+
+  if (rank === 4) {
+    return (
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/15 text-accent sm:size-11">
+        <DollarSign className="size-4 sm:size-5" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/8 bg-white/5 text-sm font-black text-muted-foreground sm:size-11 sm:text-base">
+      {rank}
+    </div>
+  );
 }
 
-function getRankTriggerClass(rank: number) {
-  if (rank === 1) return "bg-gradient-to-r from-[#281928] via-[#082044] to-[#061a38] text-white hover:bg-[#0a1f43]";
-  if (rank === 2) return "bg-gradient-to-r from-[#2b281b] via-[#082044] to-[#061a38] text-white hover:bg-[#0a1f43]";
-  if (rank === 3) return "bg-gradient-to-r from-[#172d4b] via-[#082044] to-[#061a38] text-white hover:bg-[#0a1f43]";
-  if (rank === 4) return "bg-gradient-to-r from-[#173329] via-[#082044] to-[#061a38] text-white hover:bg-[#0a1f43]";
-  return "bg-[#061a38] text-white hover:bg-[#0a2854]";
-}
-
-function getRankBadgeClass(rank: number) {
-  if (rank === 1) return "border border-[#9e465a] bg-[#4b1f31] text-[#ffd8e1]";
-  if (rank === 2) return "border border-[#9c834d] bg-[#473b22] text-[#ffedc2]";
-  if (rank === 3) return "border border-[#527fae] bg-[#1f4068] text-[#d6e9ff]";
-  if (rank === 4) return "border border-[#4f8a71] bg-[#1f4639] text-[#d7f4e8]";
-  return "bg-[#e4edf8] text-[#37506f]";
+function getRankRailClass(rank: number) {
+  if (rank === 1) return "border-l-[var(--gold)]/70";
+  if (rank === 2) return "border-l-[var(--silver)]/70";
+  if (rank === 3) return "border-l-[var(--bronze)]/70";
+  if (rank === 4) return "border-l-accent/70";
+  return "border-l-transparent";
 }
 
 function getPayoutPillClass(rank: number) {
-  if (rank === 1) return "border-[#9e465a]/70 bg-[#2b1321]/70 text-[#ffc9d5]";
-  if (rank === 2) return "border-[#9c834d]/70 bg-[#271f12]/70 text-[#f3d99b]";
-  if (rank === 3) return "border-[#527fae]/70 bg-[#102944]/70 text-[#c5def8]";
-  return "border-[#4f8a71]/70 bg-[#102d25]/70 text-[#c5eadb]";
+  if (rank === 1) return "border-[var(--gold)]/30 bg-[var(--gold)]/10 text-[var(--gold)]";
+  if (rank === 2) return "border-[var(--silver)]/30 bg-[var(--silver)]/10 text-[var(--silver)]";
+  if (rank === 3) return "border-[var(--bronze)]/30 bg-[var(--bronze)]/10 text-[var(--bronze)]";
+  return "border-accent/30 bg-accent/10 text-accent";
+}
+
+function getMedalClass(rank: number) {
+  if (rank === 1) return "bg-[var(--gold)]/15 text-[var(--gold)] border border-[var(--gold)]/30";
+  if (rank === 2) return "bg-[var(--silver)]/15 text-[var(--silver)] border border-[var(--silver)]/30";
+  return "bg-[var(--bronze)]/15 text-[var(--bronze)] border border-[var(--bronze)]/30";
+}
+
+function PlayerStatusBadge({ player }: { player: Player }) {
+  return (
+    <span className={cn(
+      "shrink-0 rounded-full border px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.06em]",
+      getPlayerStatusClass(player.status),
+    )}>
+      {player.statusLabel}
+    </span>
+  );
+}
+
+function getPlayerStatusClass(status: PlayerGameStatus) {
+  if (status === "home_run_today") {
+    return "border-primary/30 bg-primary/15 text-red-300";
+  }
+
+  if (status === "in_game_now") {
+    return "border-accent/30 bg-accent/15 text-accent";
+  }
+
+  if (status === "played_today") {
+    return "border-[#7c9bff]/30 bg-[#7c9bff]/15 text-[#b9c8ff]";
+  }
+
+  if (status === "injured_list") {
+    return "border-[var(--bronze)]/30 bg-[var(--bronze)]/15 text-[var(--bronze)]";
+  }
+
+  if (status === "playing_today") {
+    return "border-[var(--gold)]/30 bg-[var(--gold)]/15 text-[var(--gold)]";
+  }
+
+  return "border-white/10 bg-white/5 text-muted-foreground";
+}
+
+function PlayerHeadshot({ player }: { player: Player }) {
+  const [didError, setDidError] = useState(false);
+
+  if (didError) {
+    return (
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-secondary text-xs font-black text-white">
+        {getInitials(player.name)}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={player.imageUrl}
+      alt={`${player.name} headshot`}
+      loading="lazy"
+      onError={() => setDidError(true)}
+      className="size-10 shrink-0 rounded-full border border-white/10 bg-secondary object-cover object-[center_18%]"
+    />
+  );
+}
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 }
 
 function getPayout(rank: number) {
@@ -171,3 +266,4 @@ function formatOrdinal(rank: number) {
   if (rank === 3) return "3rd";
   return `${rank}th`;
 }
+
