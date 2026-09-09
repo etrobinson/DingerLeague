@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { LeagueStandings } from "./components/LeagueStandings";
+import { HomeRunFeed } from "./components/HomeRunFeed";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { LEAGUE_SEASON, rosterPlayers, rosterTeams } from "./data/leagueRosters";
 import {
   getMlbPlayerHeadshotUrl,
@@ -206,7 +208,18 @@ export default function App() {
           </div>
         </div>
 
-        <LeagueStandings teams={teams} allPlayers={players} />
+        <Tabs defaultValue="standings" className="gap-4">
+          <TabsList className="w-full sm:w-fit">
+            <TabsTrigger value="standings">Standings</TabsTrigger>
+            <TabsTrigger value="live-feed">Live Feed</TabsTrigger>
+          </TabsList>
+          <TabsContent value="standings">
+            <LeagueStandings teams={teams} allPlayers={players} />
+          </TabsContent>
+          <TabsContent value="live-feed">
+            <HomeRunFeed />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
