@@ -25,7 +25,9 @@ export interface SeasonBattingStatsOptions {
 }
 
 export interface MlbScheduleOptions {
-  date: string;
+  date?: string;
+  startDate?: string;
+  endDate?: string;
   hydrate?: string;
   signal?: AbortSignal;
   sportId?: number;
@@ -170,6 +172,52 @@ export interface MlbBoxscorePlayer {
   };
 }
 
+export interface MlbHitCoordinates {
+  coordX: number;
+  coordY: number;
+}
+
+export interface MlbHitData {
+  launchSpeed?: number;
+  launchAngle?: number;
+  totalDistance?: number;
+  trajectory?: string;
+  hardness?: string;
+  coordinates?: MlbHitCoordinates;
+}
+
+export interface MlbPlayEvent {
+  details?: {
+    isInPlay?: boolean;
+    description?: string;
+  };
+  hitData?: MlbHitData;
+}
+
+export interface MlbPlayMatchupParticipant {
+  id: number;
+  fullName: string;
+}
+
+export interface MlbPlay {
+  result: {
+    eventType?: string;
+    description?: string;
+  };
+  about: {
+    inning?: number;
+    halfInning?: string;
+    startTime?: string;
+    isComplete?: boolean;
+  };
+  matchup: {
+    batter: MlbPlayMatchupParticipant;
+    pitcher: MlbPlayMatchupParticipant;
+    batSide?: { code?: string };
+  };
+  playEvents: MlbPlayEvent[];
+}
+
 export interface MlbGameFeedResponse {
   copyright?: string;
   gamePk: number;
@@ -178,6 +226,13 @@ export interface MlbGameFeedResponse {
       abstractGameState?: string;
       detailedState?: string;
       statusCode?: string;
+    };
+    teams?: {
+      away?: MlbTeam;
+      home?: MlbTeam;
+    };
+    datetime?: {
+      officialDate?: string;
     };
   };
   liveData?: {
@@ -190,6 +245,9 @@ export interface MlbGameFeedResponse {
           players?: Record<string, MlbBoxscorePlayer>;
         };
       };
+    };
+    plays?: {
+      allPlays?: MlbPlay[];
     };
   };
 }
@@ -312,6 +370,8 @@ export class MlbStatsApiService {
   getSchedule(options: MlbScheduleOptions): Promise<MlbScheduleResponse> {
     const {
       date,
+      startDate,
+      endDate,
       hydrate = "team",
       signal,
       sportId = 1,
@@ -321,6 +381,8 @@ export class MlbStatsApiService {
       query: {
         sportId,
         date,
+        startDate,
+        endDate,
         hydrate,
       },
       signal,

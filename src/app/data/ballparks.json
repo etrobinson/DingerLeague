@@ -1,0 +1,363 @@
+[
+  {
+    "id": "BOS", "team": "Red Sox", "name": "Fenway Park", "city": "Boston, MA",
+    "fence": [
+      { "angle": -45, "distance": 310, "wallHeight": 37 },
+      { "angle": -30, "distance": 379, "wallHeight": 37 },
+      { "angle": -15, "distance": 384, "wallHeight": 20 },
+      { "angle": 0, "distance": 390, "wallHeight": 17 },
+      { "angle": 15, "distance": 420, "wallHeight": 17 },
+      { "angle": 30, "distance": 380, "wallHeight": 5 },
+      { "angle": 45, "distance": 302, "wallHeight": 3 }
+    ]
+  },
+  {
+    "id": "NYY", "team": "Yankees", "name": "Yankee Stadium", "city": "Bronx, NY",
+    "fence": [
+      { "angle": -45, "distance": 318, "wallHeight": 8 },
+      { "angle": -30, "distance": 399, "wallHeight": 8 },
+      { "angle": -15, "distance": 404, "wallHeight": 8 },
+      { "angle": 0, "distance": 408, "wallHeight": 8 },
+      { "angle": 15, "distance": 397, "wallHeight": 8 },
+      { "angle": 30, "distance": 385, "wallHeight": 8 },
+      { "angle": 45, "distance": 314, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "BAL", "team": "Orioles", "name": "Oriole Park at Camden Yards", "city": "Baltimore, MD",
+    "fence": [
+      { "angle": -45, "distance": 333, "wallHeight": 13 },
+      { "angle": -30, "distance": 364, "wallHeight": 13 },
+      { "angle": -15, "distance": 382, "wallHeight": 10 },
+      { "angle": 0, "distance": 400, "wallHeight": 7 },
+      { "angle": 15, "distance": 387, "wallHeight": 7 },
+      { "angle": 30, "distance": 373, "wallHeight": 7 },
+      { "angle": 45, "distance": 318, "wallHeight": 7 }
+    ]
+  },
+  {
+    "id": "TB", "team": "Rays", "name": "Tropicana Field", "city": "St. Petersburg, FL",
+    "fence": [
+      { "angle": -45, "distance": 315, "wallHeight": 8 },
+      { "angle": -30, "distance": 370, "wallHeight": 8 },
+      { "angle": -15, "distance": 387, "wallHeight": 8 },
+      { "angle": 0, "distance": 404, "wallHeight": 8 },
+      { "angle": 15, "distance": 387, "wallHeight": 8 },
+      { "angle": 30, "distance": 370, "wallHeight": 8 },
+      { "angle": 45, "distance": 322, "wallHeight": 11 }
+    ]
+  },
+  {
+    "id": "TOR", "team": "Blue Jays", "name": "Rogers Centre", "city": "Toronto, ON",
+    "fence": [
+      { "angle": -45, "distance": 328, "wallHeight": 10 },
+      { "angle": -30, "distance": 375, "wallHeight": 10 },
+      { "angle": -15, "distance": 388, "wallHeight": 10 },
+      { "angle": 0, "distance": 400, "wallHeight": 10 },
+      { "angle": 15, "distance": 388, "wallHeight": 10 },
+      { "angle": 30, "distance": 375, "wallHeight": 10 },
+      { "angle": 45, "distance": 328, "wallHeight": 10 }
+    ]
+  },
+  {
+    "id": "CWS", "team": "White Sox", "name": "Guaranteed Rate Field", "city": "Chicago, IL",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 8 },
+      { "angle": -30, "distance": 375, "wallHeight": 8 },
+      { "angle": -15, "distance": 388, "wallHeight": 8 },
+      { "angle": 0, "distance": 400, "wallHeight": 8 },
+      { "angle": 15, "distance": 388, "wallHeight": 8 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 335, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "CLE", "team": "Guardians", "name": "Progressive Field", "city": "Cleveland, OH",
+    "fence": [
+      { "angle": -45, "distance": 325, "wallHeight": 19 },
+      { "angle": -30, "distance": 370, "wallHeight": 9 },
+      { "angle": -15, "distance": 388, "wallHeight": 9 },
+      { "angle": 0, "distance": 405, "wallHeight": 8 },
+      { "angle": 15, "distance": 390, "wallHeight": 8 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 325, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "DET", "team": "Tigers", "name": "Comerica Park", "city": "Detroit, MI",
+    "fence": [
+      { "angle": -45, "distance": 345, "wallHeight": 8 },
+      { "angle": -30, "distance": 370, "wallHeight": 8 },
+      { "angle": -15, "distance": 395, "wallHeight": 8 },
+      { "angle": 0, "distance": 420, "wallHeight": 8 },
+      { "angle": 15, "distance": 393, "wallHeight": 8 },
+      { "angle": 30, "distance": 365, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 4 }
+    ]
+  },
+  {
+    "id": "KC", "team": "Royals", "name": "Kauffman Stadium", "city": "Kansas City, MO",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 8 },
+      { "angle": -30, "distance": 375, "wallHeight": 8 },
+      { "angle": -15, "distance": 393, "wallHeight": 8 },
+      { "angle": 0, "distance": 410, "wallHeight": 8 },
+      { "angle": 15, "distance": 393, "wallHeight": 8 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "MIN", "team": "Twins", "name": "Target Field", "city": "Minneapolis, MN",
+    "fence": [
+      { "angle": -45, "distance": 339, "wallHeight": 8 },
+      { "angle": -30, "distance": 377, "wallHeight": 8 },
+      { "angle": -15, "distance": 391, "wallHeight": 8 },
+      { "angle": 0, "distance": 404, "wallHeight": 8 },
+      { "angle": 15, "distance": 386, "wallHeight": 16 },
+      { "angle": 30, "distance": 367, "wallHeight": 23 },
+      { "angle": 45, "distance": 328, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "HOU", "team": "Astros", "name": "Minute Maid Park", "city": "Houston, TX",
+    "fence": [
+      { "angle": -45, "distance": 315, "wallHeight": 19 },
+      { "angle": -30, "distance": 362, "wallHeight": 21 },
+      { "angle": -15, "distance": 386, "wallHeight": 16 },
+      { "angle": 0, "distance": 409, "wallHeight": 10 },
+      { "angle": 15, "distance": 391, "wallHeight": 9 },
+      { "angle": 30, "distance": 373, "wallHeight": 7 },
+      { "angle": 45, "distance": 326, "wallHeight": 7 }
+    ]
+  },
+  {
+    "id": "LAA", "team": "Angels", "name": "Angel Stadium", "city": "Anaheim, CA",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 8 },
+      { "angle": -30, "distance": 387, "wallHeight": 8 },
+      { "angle": -15, "distance": 392, "wallHeight": 8 },
+      { "angle": 0, "distance": 396, "wallHeight": 8 },
+      { "angle": 15, "distance": 383, "wallHeight": 8 },
+      { "angle": 30, "distance": 370, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 18 }
+    ]
+  },
+  {
+    "id": "ATH", "team": "Athletics", "name": "Sutter Health Park", "city": "West Sacramento, CA",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 8 },
+      { "angle": -30, "distance": 362, "wallHeight": 8 },
+      { "angle": -15, "distance": 383, "wallHeight": 8 },
+      { "angle": 0, "distance": 403, "wallHeight": 8 },
+      { "angle": 15, "distance": 383, "wallHeight": 8 },
+      { "angle": 30, "distance": 362, "wallHeight": 8 },
+      { "angle": 45, "distance": 325, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "SEA", "team": "Mariners", "name": "T-Mobile Park", "city": "Seattle, WA",
+    "fence": [
+      { "angle": -45, "distance": 331, "wallHeight": 8 },
+      { "angle": -30, "distance": 378, "wallHeight": 8 },
+      { "angle": -15, "distance": 390, "wallHeight": 8 },
+      { "angle": 0, "distance": 401, "wallHeight": 8 },
+      { "angle": 15, "distance": 391, "wallHeight": 13 },
+      { "angle": 30, "distance": 381, "wallHeight": 17 },
+      { "angle": 38, "distance": 335, "wallHeight": 8 },
+      { "angle": 45, "distance": 326, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "TEX", "team": "Rangers", "name": "Globe Life Field", "city": "Arlington, TX",
+    "fence": [
+      { "angle": -45, "distance": 329, "wallHeight": 8 },
+      { "angle": -30, "distance": 372, "wallHeight": 8 },
+      { "angle": -15, "distance": 390, "wallHeight": 11 },
+      { "angle": 0, "distance": 407, "wallHeight": 14 },
+      { "angle": 15, "distance": 391, "wallHeight": 11 },
+      { "angle": 30, "distance": 374, "wallHeight": 8 },
+      { "angle": 45, "distance": 326, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "ATL", "team": "Braves", "name": "Truist Park", "city": "Atlanta, GA",
+    "fence": [
+      { "angle": -45, "distance": 335, "wallHeight": 8 },
+      { "angle": -30, "distance": 375, "wallHeight": 8 },
+      { "angle": -15, "distance": 388, "wallHeight": 12 },
+      { "angle": 0, "distance": 400, "wallHeight": 16 },
+      { "angle": 15, "distance": 388, "wallHeight": 12 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 325, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "MIA", "team": "Marlins", "name": "loanDepot Park", "city": "Miami, FL",
+    "fence": [
+      { "angle": -45, "distance": 344, "wallHeight": 12 },
+      { "angle": -30, "distance": 386, "wallHeight": 12 },
+      { "angle": -15, "distance": 393, "wallHeight": 12 },
+      { "angle": 0, "distance": 400, "wallHeight": 12 },
+      { "angle": 15, "distance": 396, "wallHeight": 12 },
+      { "angle": 30, "distance": 392, "wallHeight": 12 },
+      { "angle": 45, "distance": 335, "wallHeight": 12 }
+    ]
+  },
+  {
+    "id": "NYM", "team": "Mets", "name": "Citi Field", "city": "New York, NY",
+    "fence": [
+      { "angle": -45, "distance": 335, "wallHeight": 8 },
+      { "angle": -30, "distance": 358, "wallHeight": 8 },
+      { "angle": -15, "distance": 385, "wallHeight": 8 },
+      { "angle": 0, "distance": 408, "wallHeight": 8 },
+      { "angle": 15, "distance": 390, "wallHeight": 8 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "PHI", "team": "Phillies", "name": "Citizens Bank Park", "city": "Philadelphia, PA",
+    "fence": [
+      { "angle": -45, "distance": 329, "wallHeight": 13 },
+      { "angle": -30, "distance": 374, "wallHeight": 8 },
+      { "angle": -15, "distance": 388, "wallHeight": 8 },
+      { "angle": 0, "distance": 401, "wallHeight": 8 },
+      { "angle": 15, "distance": 385, "wallHeight": 8 },
+      { "angle": 30, "distance": 369, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 6 }
+    ]
+  },
+  {
+    "id": "WSH", "team": "Nationals", "name": "Nationals Park", "city": "Washington, DC",
+    "fence": [
+      { "angle": -45, "distance": 336, "wallHeight": 8 },
+      { "angle": -30, "distance": 377, "wallHeight": 8 },
+      { "angle": -15, "distance": 390, "wallHeight": 8 },
+      { "angle": 0, "distance": 402, "wallHeight": 8 },
+      { "angle": 15, "distance": 386, "wallHeight": 14 },
+      { "angle": 30, "distance": 370, "wallHeight": 14 },
+      { "angle": 45, "distance": 335, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "CHC", "team": "Cubs", "name": "Wrigley Field", "city": "Chicago, IL",
+    "fence": [
+      { "angle": -45, "distance": 355, "wallHeight": 11.5 },
+      { "angle": -30, "distance": 368, "wallHeight": 11.5 },
+      { "angle": -15, "distance": 384, "wallHeight": 11.5 },
+      { "angle": 0, "distance": 400, "wallHeight": 11.5 },
+      { "angle": 15, "distance": 377, "wallHeight": 11.5 },
+      { "angle": 30, "distance": 353, "wallHeight": 11.5 },
+      { "angle": 45, "distance": 353, "wallHeight": 11.5 }
+    ]
+  },
+  {
+    "id": "CIN", "team": "Reds", "name": "Great American Ball Park", "city": "Cincinnati, OH",
+    "fence": [
+      { "angle": -45, "distance": 328, "wallHeight": 12 },
+      { "angle": -30, "distance": 379, "wallHeight": 8 },
+      { "angle": -15, "distance": 392, "wallHeight": 8 },
+      { "angle": 0, "distance": 404, "wallHeight": 8 },
+      { "angle": 15, "distance": 387, "wallHeight": 8 },
+      { "angle": 30, "distance": 370, "wallHeight": 8 },
+      { "angle": 45, "distance": 325, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "MIL", "team": "Brewers", "name": "American Family Field", "city": "Milwaukee, WI",
+    "fence": [
+      { "angle": -45, "distance": 344, "wallHeight": 8 },
+      { "angle": -30, "distance": 371, "wallHeight": 8 },
+      { "angle": -15, "distance": 386, "wallHeight": 8 },
+      { "angle": 0, "distance": 400, "wallHeight": 8 },
+      { "angle": 15, "distance": 387, "wallHeight": 8 },
+      { "angle": 30, "distance": 374, "wallHeight": 8 },
+      { "angle": 45, "distance": 345, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "PIT", "team": "Pirates", "name": "PNC Park", "city": "Pittsburgh, PA",
+    "fence": [
+      { "angle": -45, "distance": 325, "wallHeight": 6 },
+      { "angle": -30, "distance": 383, "wallHeight": 6 },
+      { "angle": -15, "distance": 391, "wallHeight": 6 },
+      { "angle": 0, "distance": 399, "wallHeight": 10 },
+      { "angle": 15, "distance": 387, "wallHeight": 10 },
+      { "angle": 30, "distance": 375, "wallHeight": 10 },
+      { "angle": 45, "distance": 320, "wallHeight": 21 }
+    ]
+  },
+  {
+    "id": "STL", "team": "Cardinals", "name": "Busch Stadium", "city": "St. Louis, MO",
+    "fence": [
+      { "angle": -45, "distance": 336, "wallHeight": 8 },
+      { "angle": -30, "distance": 375, "wallHeight": 8 },
+      { "angle": -15, "distance": 388, "wallHeight": 8 },
+      { "angle": 0, "distance": 400, "wallHeight": 8 },
+      { "angle": 15, "distance": 386, "wallHeight": 8 },
+      { "angle": 30, "distance": 371, "wallHeight": 8 },
+      { "angle": 45, "distance": 335, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "ARI", "team": "D-backs", "name": "Chase Field", "city": "Phoenix, AZ",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 8 },
+      { "angle": -30, "distance": 376, "wallHeight": 8 },
+      { "angle": -15, "distance": 392, "wallHeight": 25 },
+      { "angle": 0, "distance": 407, "wallHeight": 25 },
+      { "angle": 15, "distance": 392, "wallHeight": 25 },
+      { "angle": 30, "distance": 376, "wallHeight": 8 },
+      { "angle": 45, "distance": 334, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "COL", "team": "Rockies", "name": "Coors Field", "city": "Denver, CO",
+    "fence": [
+      { "angle": -45, "distance": 347, "wallHeight": 8 },
+      { "angle": -30, "distance": 390, "wallHeight": 14 },
+      { "angle": -15, "distance": 403, "wallHeight": 11 },
+      { "angle": 0, "distance": 415, "wallHeight": 8 },
+      { "angle": 15, "distance": 395, "wallHeight": 8 },
+      { "angle": 30, "distance": 375, "wallHeight": 8 },
+      { "angle": 45, "distance": 350, "wallHeight": 8 }
+    ]
+  },
+  {
+    "id": "LAD", "team": "Dodgers", "name": "Dodger Stadium", "city": "Los Angeles, CA",
+    "fence": [
+      { "angle": -45, "distance": 330, "wallHeight": 4 },
+      { "angle": -30, "distance": 375, "wallHeight": 8 },
+      { "angle": -15, "distance": 385, "wallHeight": 8 },
+      { "angle": 0, "distance": 395, "wallHeight": 8 },
+      { "angle": 15, "distance": 383, "wallHeight": 8 },
+      { "angle": 30, "distance": 370, "wallHeight": 8 },
+      { "angle": 45, "distance": 330, "wallHeight": 4 }
+    ]
+  },
+  {
+    "id": "SF", "team": "Giants", "name": "Oracle Park", "city": "San Francisco, CA",
+    "fence": [
+      { "angle": -45, "distance": 339, "wallHeight": 8 },
+      { "angle": -30, "distance": 364, "wallHeight": 8 },
+      { "angle": -15, "distance": 382, "wallHeight": 8 },
+      { "angle": 0, "distance": 399, "wallHeight": 8 },
+      { "angle": 15, "distance": 410, "wallHeight": 8 },
+      { "angle": 30, "distance": 421, "wallHeight": 8 },
+      { "angle": 45, "distance": 309, "wallHeight": 24 }
+    ]
+  },
+  {
+    "id": "SD", "team": "Padres", "name": "Petco Park", "city": "San Diego, CA",
+    "fence": [
+      { "angle": -45, "distance": 336, "wallHeight": 8 },
+      { "angle": -30, "distance": 390, "wallHeight": 8 },
+      { "angle": -15, "distance": 393, "wallHeight": 8 },
+      { "angle": 0, "distance": 396, "wallHeight": 8 },
+      { "angle": 15, "distance": 394, "wallHeight": 8 },
+      { "angle": 30, "distance": 391, "wallHeight": 8 },
+      { "angle": 45, "distance": 322, "wallHeight": 8 }
+    ]
+  }
+]
