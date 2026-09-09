@@ -13,7 +13,7 @@ export interface PlayerBattingStatsOptions {
   season?: number;
   gameType?: "R" | "S" | "E" | "A" | "D" | "F" | "L" | "W";
   signal?: AbortSignal;
-  stats?: "season" | "career" | "yearByYear";
+  stats?: "season" | "career" | "yearByYear" | "gameLog";
 }
 
 export interface SeasonBattingStatsOptions {
@@ -92,6 +92,7 @@ export interface MlbBattingStatLine {
 
 export interface MlbStatSplit<TStatLine> {
   season?: string;
+  date?: string;
   player?: MlbPerson;
   team?: MlbTeam;
   league?: MlbTeam;
